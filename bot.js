@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const auth = require('./auth.json');
+const discordToken = process.env.discordToken || require('./auth.json').discordToken;
 const client = new Discord.Client();
 const UrlValidator = require('./utils/UrlValidator.js');
 
@@ -32,4 +32,4 @@ client.on('message', message => {
   }
 });
 
-client.login(auth.discordToken);
+client.login(discordToken);
