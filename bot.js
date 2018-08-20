@@ -30,6 +30,32 @@ client.on('message', message => {
   if (vlMatch) {
     client.channels.find(ch => ch.name === 'vlive-links').send(vlMatch[0]);
   }
+
+  const tokens = message.content.split(' ');
+  if (tokens.length > 1 && tokens[0] === 'kimbap') {
+    switch(tokens[1]) {
+      case 'create-role':
+        if (tokens.length < 3) {
+          message.channel.send('Neomuhae!');
+          break;
+        }
+        message.guild.createRole({
+            name: tokens[2],
+            color: tokens[3],
+          })
+          .then(role => {
+            console.log(`Created new role with name ${role.name} and color ${role.color}`);
+            message.channel.send(`Created new role with name ${role.name} and color ${role.color}`);
+          })
+          .catch(err => {
+            console.error(err);
+            message.channel.send(`Neomuhae! ${err}`);
+          });
+        break;
+      default:
+        message.channel.send('Neomuhae!');
+    }
+  }
 });
 
 client.login(discordToken);
