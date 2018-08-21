@@ -8,6 +8,12 @@ client.on('ready', () => {
   console.log('Ready!');
 });
 
+client.on('guildMemberAdd', member => {
+  const channel = member.guild.channels.find(ch => ch.name === 'general');
+  if (!channel) return;
+  channel.send(`Annyeonghaseyo ${member}!`);
+});
+
 client.on('message', message => {
   if (message.author.bot) return;
 
