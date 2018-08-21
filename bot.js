@@ -82,16 +82,20 @@ client.on('message', message => {
   const spMatch = UrlValidator.matchSpotifyUrl(message.content);
   const vlMatch = UrlValidator.matchVLiveUrl(message.content);
   if (ytMatch) {
-    client.channels.find(ch => ch.name === 'youtube-links').send(ytMatch[0]);
+    const ytChannel = client.channels.find(ch => ch.name === 'youtube-links');
+    if (ytChannel) ytChannel.send(ytMatch[0]);
   }
   if (igMatch) {
-    client.channels.find(ch => ch.name === 'instagram-links').send(igMatch[0]);
+    const igChannel = client.channels.find(ch => ch.name === 'instagram-links');
+    if (igChannel) igChannel.send(igMatch[0]);
   }
   if (spMatch) {
-    client.channels.find(ch => ch.name === 'spotify-links').send(spMatch[0]);
+    const spChannel = client.channels.find(ch => ch.name === 'spotify-links');
+    if (spChannel) spChannel.send(spMatch[0]);
   }
   if (vlMatch) {
-    client.channels.find(ch => ch.name === 'vlive-links').send(vlMatch[0]);
+    const vliveChannel = client.channels.find(ch => ch.name === 'vlive-links');
+    if (vliveChannel) vliveChannel.send(vlMatch[0]);
   }
 });
 
