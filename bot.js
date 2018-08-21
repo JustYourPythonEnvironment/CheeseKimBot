@@ -1,8 +1,11 @@
+require('dotenv').config();
 const Discord = require('discord.js');
-const discordToken = process.env.discordToken || require('./auth.json').discordToken;
-const client = new Discord.Client();
 const UrlValidator = require('./utils/UrlValidator.js');
 const Utils = require('./utils/Utils.js');
+
+const discordToken = process.env.DISCORD_TOKEN;
+
+const client = new Discord.Client();
 
 client.on('ready', () => {
   console.log('Ready!');
