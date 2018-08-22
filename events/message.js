@@ -8,7 +8,6 @@ module.exports = async (client, message) => {
         if (message.content.endsWith('Sana!')) {
             message.channel.send('Shy shy shy!');
         }
-
         Actions.archiveMedia(message);
     } else {
         const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
