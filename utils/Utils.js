@@ -1,11 +1,17 @@
+const errorPhrases = require('../assets/errorPhrases.json');
+
+logAndMsg = (channel, msg) => {
+  console.log(msg);
+  channel.send(msg);
+};
+getRandomIndex = (arr) => Math.floor(Math.random() * arr.length);
+errAndMsg = (channel, err) => {
+  console.error(err);
+  channel.send(`${errorPhrases[getRandomIndex(errorPhrases)]} ${err}`);
+};
+
 module.exports = {
-  logAndMsg: (channel, msg) => {
-    console.log(msg);
-    channel.send(msg);
-  },
-  errAndMsg: (channel, err) => {
-    console.error(err);
-    channel.send(`Neomuhae! ${err}`);
-  },
-  getRandomIndex: (arr) => Math.floor(Math.random() * arr.length),
+  logAndMsg,
+  getRandomIndex,
+  errAndMsg,
 };

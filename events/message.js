@@ -1,4 +1,6 @@
+const Utils = require('../utils/Utils.js');
 const UrlValidator = require('../utils/UrlValidator.js');
+const errorPhrases = require('../assets/errorPhrases.json');
 
 module.exports = async (client, message) => {
     if (message.author.bot) return;
@@ -8,37 +10,36 @@ module.exports = async (client, message) => {
             message.channel.send('Shy shy shy!');
         }
 
+        const guild = message.guild;
+        if (!guild) return;
+
         const ytMatch = UrlValidator.matchYTUrl(message.content);
         const igMatch = UrlValidator.matchIGUrl(message.content);
         const spMatch = UrlValidator.matchSpotifyUrl(message.content);
         const vlMatch = UrlValidator.matchVLiveUrl(message.content);
 
         if (ytMatch) {
-            const ytChannel = client.channels.find(ch => ch.name === 'youtube-links');
+            const ytChannel = guild.channels.find(ch => ch.name === 'youtube-links');
             if (ytChannel) ytChannel.send(ytMatch[0]);
-            return;
         }
         if (igMatch) {
-            const igChannel = client.channels.find(ch => ch.name === 'instagram-links');
+            const igChannel = guild.channels.find(ch => ch.name === 'instagram-links');
             if (igChannel) igChannel.send(igMatch[0]);
-            return;
         }
         if (spMatch) {
-            const spChannel = client.channels.find(ch => ch.name === 'spotify-links');
+            const spChannel = guild.channels.find(ch => ch.name === 'spotify-links');
             if (spChannel) spChannel.send(spMatch[0]);
-            return;
         }
         if (vlMatch) {
-            const vliveChannel = client.channels.find(ch => ch.name === 'vlive-links');
+            const vliveChannel = guild.channels.find(ch => ch.name === 'vlive-links');
             if (vliveChannel) vliveChannel.send(vlMatch[0]);
-            return;
         }
 
         
     } else {
         const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
-        console.log(args, command)
+        console.log(args, command);
 
         let commandToRun = null;
 
@@ -51,7 +52,7 @@ module.exports = async (client, message) => {
         if (commandToRun) {
             commandToRun.run(client, message, args);
         } else {
-            // do nothing
+            Utils.errAndMsg(message.channel, 'Invalid command.');
         }
     }
     return;
