@@ -1,3 +1,4 @@
+const Actions = require('../utils/Actions.js');
 const Utils = require('../utils/Utils.js');
 const errorPhrases = require('../assets/errorPhrases.json');
 
@@ -8,7 +9,7 @@ module.exports = async (client, message) => {
             message.channel.send('Shy shy shy!');
         }
 
-        Utils.archiveMedia(message);
+        Actions.archiveMedia(message);
     } else {
         const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();

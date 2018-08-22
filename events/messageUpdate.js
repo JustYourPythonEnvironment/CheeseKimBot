@@ -1,7 +1,7 @@
-const Utils = require('../utils/Utils.js');
+const Actions = require('../utils/Actions.js');
 
 module.exports = async (client, oldMessage, newMessage) => {
   if (newMessage.author.bot) return;
-  Utils.archiveMedia(newMessage);
+  Actions.archiveMedia(newMessage);
   return;
 };
