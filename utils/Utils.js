@@ -45,7 +45,7 @@ archiveMedia = (message) => {
   }
   if (attachments) {
     attachments.forEach((attachment) => {
-      const mediaChannel = guild.channels.find(ch => ch.name === 'media');
+      const mediaChannel = guild.channels.find(ch => ch.name === 'attachments');
       if (mediaChannel) mediaChannel.send(new Attachment(attachment.url));
     });
   }
