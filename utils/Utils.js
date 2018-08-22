@@ -1,10 +1,11 @@
 module.exports = {
-  logAndMsg: function(channel, msg) {
+  logAndMsg: (channel, msg) => {
     console.log(msg);
     channel.send(msg);
   },
-  errAndMsg: function(channel, err) {
+  errAndMsg: (channel, err) => {
     console.error(err);
     channel.send(`Neomuhae! ${err}`);
-  }
+  },
+  getRandomIndex: (arr) => Math.floor(Math.random() * arr.length),
 };

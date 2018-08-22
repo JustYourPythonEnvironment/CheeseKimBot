@@ -15,6 +15,7 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - node_modules
+
   test:
     working_directory: ~/CheeseKimBot
     docker:
@@ -44,6 +45,7 @@ jobs:
               git remote add dokku dokku@$server_ip:cheese-kim-bot
               git push dokku master
             fi
+            
   deploy_success:
     working_directory: ~/CheeseKimBot
     docker:
