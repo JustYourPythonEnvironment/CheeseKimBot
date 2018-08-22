@@ -1,3 +1,4 @@
+const Attachment = require('discord.js').Attachment;
 const Utils = require('../utils/Utils.js');
 const UrlValidator = require('../utils/UrlValidator.js');
 const errorPhrases = require('../assets/errorPhrases.json');
@@ -13,29 +14,38 @@ module.exports = async (client, message) => {
         const guild = message.guild;
         if (!guild) return;
 
-        const ytMatch = UrlValidator.matchYTUrl(message.content);
-        const igMatch = UrlValidator.matchIGUrl(message.content);
-        const spMatch = UrlValidator.matchSpotifyUrl(message.content);
-        const vlMatch = UrlValidator.matchVLiveUrl(message.content);
-
-        if (ytMatch) {
-            const ytChannel = guild.channels.find(ch => ch.name === 'youtube-links');
-            if (ytChannel) ytChannel.send(ytMatch[0]);
+        const embeds = message.embeds;
+        const attachments = message.attachments;
+        if (embeds) {
+            embeds.forEach((embed) => {
+                const ytMatch = UrlValidator.matchYTUrl(embed.url);
+                const igMatch = UrlValidator.matchIGUrl(embed.url);
+                const spMatch = UrlValidator.matchSpotifyUrl(embed.url);
+                const vlMatch = UrlValidator.matchVLiveUrl(embed.url);
+                if (ytMatch) {
+                    const ytChannel = guild.channels.find(ch => ch.name === 'youtube-links');
+                    if (ytChannel) ytChannel.send(ytMatch[0]);
+                } else if (igMatch) {
+                    const igChannel = guild.channels.find(ch => ch.name === 'instagram-links');
+                    if (igChannel) igChannel.send(igMatch[0]);
+                } else if (spMatch) {
+                    const spChannel = guild.channels.find(ch => ch.name === 'spotify-links');
+                    if (spChannel) spChannel.send(spMatch[0]);
+                } else if (vlMatch) {
+                    const vliveChannel = guild.channels.find(ch => ch.name === 'vlive-links');
+                    if (vliveChannel) vliveChannel.send(vlMatch[0]);
+                } else {
+                    const mediaChannel = guild.channels.find(ch => ch.name === 'media');
+                    if (mediaChannel) mediaChannel.send(embed.url);
+                }
+            });
         }
-        if (igMatch) {
-            const igChannel = guild.channels.find(ch => ch.name === 'instagram-links');
-            if (igChannel) igChannel.send(igMatch[0]);
+        if (attachments) {
+            attachments.forEach((attachment) => {
+                const mediaChannel = guild.channels.find(ch => ch.name === 'media');
+                if (mediaChannel) mediaChannel.send(new Attachment(attachment.url));
+            });
         }
-        if (spMatch) {
-            const spChannel = guild.channels.find(ch => ch.name === 'spotify-links');
-            if (spChannel) spChannel.send(spMatch[0]);
-        }
-        if (vlMatch) {
-            const vliveChannel = guild.channels.find(ch => ch.name === 'vlive-links');
-            if (vliveChannel) vliveChannel.send(vlMatch[0]);
-        }
-
-        
     } else {
         const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
