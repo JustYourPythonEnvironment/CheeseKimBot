@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "^10.9.0"
+  },
   "scripts": {
+    "start": "nodemon bot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +22,7 @@
   "homepage": "https://github.com/zuqini/CheeseKimBot#readme",
   "dependencies": {
     "discord.js": "^11.4.2",
-    "dotenv": "^6.0.0"
+    "dotenv": "^6.0.0",
+    "nodemon": "^1.18.3"
   }
 }
