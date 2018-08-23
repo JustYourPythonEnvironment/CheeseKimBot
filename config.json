@@ -1,4 +1,4 @@
 {
     "prefix": "kimbap ",
-    "ignorePrefixes": [ "wdl" ]
+    "ignorePrefixes": [ "pg" ]
 }
