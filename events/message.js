@@ -3,7 +3,7 @@ const Utils = require('../utils/Utils.js');
 const errorPhrases = require('../assets/errorPhrases.json');
 
 module.exports = async (client, message) => {
-    if (message.author.bot) return;
+    if (message.author.bot || client.config.ignorePrefixes.find(prefix => message.content.indexOf(prefix) === 0)) return;
     if (message.content.indexOf(client.config.prefix) !== 0) {
         if (message.content.endsWith('Sana!')) {
             message.channel.send('Shy shy shy!');
