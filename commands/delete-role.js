@@ -5,7 +5,7 @@ const { HELP, HELP_SHORT } = require('../assets/flags.json');
 const configuration = {
     enabled: true,
     name: 'delete-role',
-    aliases: [],
+    aliases: [ 'del' ],
     description: 'Deletes a role globally.',
     usage: 'delete-role <ROLE>',
 };
@@ -20,9 +20,13 @@ module.exports = {
             helpEmbed(message, configuration);
             Utils.errAndMsg(message.channel, 'Invalid arguments.');
         } else {
-            guild.roles.find(role => role.name === args[0]).delete()
-                .then(deleted => Utils.logAndMsg(message.channel, `Deleted role ${deleted.name}`))
-                .catch(err => Utils.errAndMsg(message.channel, err));
+            try {
+                const deleted = await guild.roles.find(role => role.name === args[0]).delete();
+                Utils.logAndMsg(message.channel, `Deleted role ${deleted.name}`);
+            } catch (err) {
+                console.error(err);
+                message.channel.send(`Couldn't delete role ${args[0]} because: ${err}`);
+            }
         }
         return;
     },

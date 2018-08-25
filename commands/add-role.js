@@ -5,7 +5,7 @@ const { HELP, HELP_SHORT } = require('../assets/flags.json');
 const configuration = {
     enabled: true,
     name: 'add-role',
-    aliases: [],
+    aliases: [ 'add' ],
     description: 'Adds role to self.',
     usage: 'add-role <ROLE>',
 };
@@ -20,9 +20,13 @@ module.exports = {
             helpEmbed(message, configuration);
             Utils.errAndMsg(message.channel, 'Invalid arguments.');
         } else {
-            member.addRole(member.guild.roles.find(role => role.name === args[0]))
-                .then(member => Utils.logAndMsg(message.channel, `Added role ${args[0]} to ${member.displayName}`))
-                .catch(err => Utils.errAndMsg(message.channel, err));
+            try {
+                await member.addRole(member.guild.roles.find(role => role.name === args[0]));
+                Utils.logAndMsg(message.channel, `Added role ${args[0]} to ${member.displayName}`);
+            } catch (err) {
+                console.error(err);
+                message.channel.send(`Couldn't add role ${args[0]} to ${member.displayName} because: ${err}`);
+            }
         }
         return;
     },
