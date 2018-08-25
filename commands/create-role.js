@@ -5,7 +5,7 @@ const { HELP, HELP_SHORT } = require('../assets/flags.json');
 const configuration = {
     enabled: true,
     name: 'create-role',
-    aliases: [],
+    aliases: [ 'create' ],
     description: 'Creates a new role globally with a hex color.',
     usage: 'create-role <ROLE> <HEX_COLOR>',
 };
@@ -20,12 +20,16 @@ module.exports = {
             helpEmbed(message, configuration);
             Utils.errAndMsg(message.channel, 'Invalid arguments.');
         } else {
-            guild.createRole({
-                name: args[0],
-                color: args[1],
-            })
-            .then(role => Utils.logAndMsg(message.channel, `Created new role with name ${role.name} and color ${role.color}`))
-            .catch(err => Utils.errAndMsg(message.channel, err));
+            try {
+                const role = await guild.createRole({
+                    name: args[0],
+                    color: args[1],
+                });
+                Utils.logAndMsg(message.channel, `Created new role with name ${role.name} and color ${role.color}`);
+            } catch (err) {
+                console.error(err);
+                message.channel.send(`Couldn't create role ${args[0]} because: ${err}`);
+            }
         }
         return;
     },

@@ -5,7 +5,7 @@ const { HELP, HELP_SHORT } = require('../assets/flags.json');
 const configuration = {
     enabled: true,
     name: 'remove-role',
-    aliases: [],
+    aliases: [ 'rm' ],
     description: 'Removes role from self.',
     usage: 'remove-role <ROLE>',
 };
@@ -20,9 +20,13 @@ module.exports = {
             helpEmbed(message, configuration);
             Utils.errAndMsg(message.channel, 'Invalid arguments.');
         } else {
-            member.removeRole(member.guild.roles.find(role => role.name === args[0]))
-                .then(member => Utils.logAndMsg(message.channel, `Removed role ${args[0]} to ${member.displayName}`))
-                .catch(err => Utils.errAndMsg(message.channel, err));
+            try {
+                await member.removeRole(member.guild.roles.find(role => role.name === args[0]));
+                Utils.logAndMsg(message.channel, `Removed role ${args[0]} from ${member.displayName}`);
+            } catch (err) {
+                console.error(err);
+                message.channel.send(`Couldn't remove role ${args[0]} from ${member.displayName} because: ${err}`);
+            }
         }
         return;
     },
