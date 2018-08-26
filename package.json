@@ -8,6 +8,8 @@
   },
   "scripts": {
     "start": "nodemon bot.js",
+    "rebuildDocker": "docker build -t ifalluphill/cheese-kim-bot .",
+    "startDocker": "docker run -p 3000:80 -v ${PWD}:/app ifalluphill/cheese-kim-bot",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
