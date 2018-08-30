@@ -1,4 +1,4 @@
-const youTubeRegEx = /(http(s)?:\/\/)?((w){3}.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/;
+const youTubeRegEx = /(http(s)?:\/\/)?((w){3}.)?youtu(?:be\.com\/watch\?.*v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/;
 const instagramRegEx = /(http(s)?:\/\/)?((w){3}.)?instagram\.com(\/p\/\w+\/?)/;
 const spotifyRegEx = /spotify:track:\w+|(http(s)?:\/\/)?((w){3}.)?[a-z]+\.spotify\.com\/[^\s]+/;
 const vliveRegEx = /(http(s)?:\/\/)?((w){3}.)?vlive\.tv\/video\/\d+/;
