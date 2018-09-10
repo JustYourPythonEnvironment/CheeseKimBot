@@ -6,26 +6,35 @@ const configuration = {
     enabled: true,
     name: 'add-role',
     aliases: [ 'add' ],
-    description: 'Adds role to self.',
-    usage: 'add-role <ROLE>',
+    description: 'Adds role to self or mentioned users.',
+    usage: 'add-role <ROLE> <MEMBERS>',
+};
+
+const addRole = async (member, message, roleName) => {
+    try {
+        await member.addRole(member.guild.roles.find(role => role.name === roleName));
+        Utils.logAndMsg(message.channel, `Added role ${roleName} to ${member.displayName}`);
+    } catch (err) {
+        console.error(err);
+        message.channel.send(`Couldn't add role ${roleName} to ${member.displayName} because: ${err}`);
+    }
 };
 
 module.exports = {
     conf: configuration,
 
     run: async (client, message, args) => {
-        const member = message.member;
+        const msgSender = message.member;
 
-        if (args[0] === HELP || args[0] === HELP_SHORT || args.length < 1 || !member) {
+        if (args[0] === HELP || args[0] === HELP_SHORT || args.length < 1 || !msgSender) {
             helpEmbed(message, configuration);
             Utils.errAndMsg(message.channel, 'Invalid arguments.');
         } else {
-            try {
-                await member.addRole(member.guild.roles.find(role => role.name === args[0]));
-                Utils.logAndMsg(message.channel, `Added role ${args[0]} to ${member.displayName}`);
-            } catch (err) {
-                console.error(err);
-                message.channel.send(`Couldn't add role ${args[0]} to ${member.displayName} because: ${err}`);
+            const members = message.mentions.members;
+            if (members.size > 0) {
+                members.forEach(member => addRole(member, message, args[0]));
+            } else {
+                addRole(msgSender, message, args[0]);
             }
         }
         return;
