@@ -12,7 +12,7 @@ module.exports = async (client, message) => {
     } else {
         const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
-        console.log(args, command);
+        // console.log(args, command);
 
         let commandToRun = null;
 
