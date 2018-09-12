@@ -28,14 +28,13 @@ module.exports = {
                     color = args[args.length - 1]
                 }
                 const role = await guild.createRole({
-                    
                     name: name,
                     color: color,
                 });
                 Utils.logAndMsg(message.channel, `Created new role with name \`${role.name}\` and color \`${role.color}\``);
             } catch (err) {
                 console.error(err);
-                message.channel.send(`Couldn't create role ${args[0]} because: ${err}`);
+                message.channel.send(`Couldn't create role \`${args[0]}\` because: ${err}`);
             }
         }
         return;

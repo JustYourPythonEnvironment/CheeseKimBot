@@ -27,10 +27,10 @@ module.exports = {
                 }
 
                 const deleted = await guild.roles.find(role => role.name === name).delete();
-                Utils.logAndMsg(message.channel, `Deleted role ${deleted.name}`);
+                Utils.logAndMsg(message.channel, `Deleted role \`${deleted.name}\``);
             } catch (err) {
                 console.error(err);
-                message.channel.send(`Couldn't delete role ${args[0]} because: ${err}`);
+                message.channel.send(`Couldn't delete role \`${args[0]}\` because: ${err}`);
             }
         }
         return;
