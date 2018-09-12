@@ -21,7 +21,12 @@ module.exports = {
             Utils.errAndMsg(message.channel, 'Invalid arguments.');
         } else {
             try {
-                const deleted = await guild.roles.find(role => role.name === args[0]).delete();
+                let name = args[0];
+                if (args.length > 1) {
+                    name = args.slice(1).reduce( (str, val) => str + ' ' + val, args[0]);
+                }
+
+                const deleted = await guild.roles.find(role => role.name === name).delete();
                 Utils.logAndMsg(message.channel, `Deleted role ${deleted.name}`);
             } catch (err) {
                 console.error(err);
