@@ -2,8 +2,8 @@ const youTubeRegEx = /(http(s)?:\/\/)?((w){3}.)?youtu(?:be\.com\/watch\?.*v=|\.b
 const instagramRegEx = /(http(s)?:\/\/)?((w){3}.)?instagram\.com(\/p\/\w+\/?)/;
 const spotifyRegEx = /spotify:track:\w+|(http(s)?:\/\/)?((w){3}.)?[a-z]+\.spotify\.com\/[^\s]+/;
 const vliveRegEx = /(http(s)?:\/\/)?((w){3}.)?vlive\.tv\/video\/\d+/;
-const twitterRegEx = /(http(s)?:\/\/)?((w){3}.)?twitter\.com\/.*/;
-const redditRegEx = /(http(s)?:\/\/)?((w){3}.)?reddit\.com\/(r|user)\/.*/;
+const twitterRegEx = /(http(s)?:\/\/)?((w){3}.)?twitter\.com\/[^\s]+/;
+const redditRegEx = /(http(s)?:\/\/)?((w){3}.)?reddit\.com\/(r|user)\/[^\s]+/;
 
 function matchStr(str, regex) {
   if (str) {
