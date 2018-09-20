@@ -20,15 +20,20 @@ module.exports = {
             helpEmbed(message, configuration);
             Utils.errAndMsg(message.channel, 'Invalid arguments.');
         } else {
-            try {
-                const role = await guild.createRole({
-                    name: args[0],
-                    color: args[1],
-                });
-                Utils.logAndMsg(message.channel, `Created new role with name ${role.name} and color ${role.color}`);
-            } catch (err) {
-                console.error(err);
-                message.channel.send(`Couldn't create role ${args[0]} because: ${err}`);
+            if (guild.roles.find(role => role.name === args[0])) {
+                message.channel.send(`The role \`${args[0]}\` already exists.`);
+            } else {
+                try {
+                    const role = await guild.createRole({
+                        name: args[0],
+                        color: args[1],
+                    });
+                    Utils.logAndMsg(message.channel, `Created new role with name ${role.name} and color ${role.color}`);
+                } catch (err) {
+                    console.error(err);
+                    message.channel.send(`Couldn't create role ${args[0]} because: ${err}`);
+                }
+
             }
         }
         return;
