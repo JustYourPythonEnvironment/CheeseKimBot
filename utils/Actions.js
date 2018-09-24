@@ -39,14 +39,14 @@ archiveMedia = (message) => {
                 const linkChannel = guild.channels.find(ch => ch.name === 'general-links');
                 if (linkChannel) linkChannel.send(embed.url);
             } else if (embed.type !== 'rich') {
-                const mediaChannel = guild.channels.find(ch => ch.name === 'media');
+                const mediaChannel = guild.channels.find(ch => ch.name === 'media-links');
                 if (mediaChannel) mediaChannel.send(embed.url);
             }
         });
     }
     if (attachments) {
         attachments.forEach((attachment) => {
-            const mediaChannel = guild.channels.find(ch => ch.name === 'attachments');
+            const mediaChannel = guild.channels.find(ch => ch.name === 'media-attachments');
             if (mediaChannel) mediaChannel.send(new Attachment(attachment.url));
         });
     }
