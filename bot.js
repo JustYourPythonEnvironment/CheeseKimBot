@@ -9,7 +9,7 @@ const client       = new Discord.Client();
 const COMMANDS_DIR = './commands/';
 const EVENTS_DIR = './events/';
 
-if (process.env.DEVELOPER === 'true') {
+if (process.env.NODE_ENV === 'development') {
   config.prefix += '-dev';
 }
 config.prefix += ' ';
