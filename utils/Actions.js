@@ -11,7 +11,6 @@ const VLIVE_LINKS = 'vlive-links';
 const TWITTER_LINKS = 'twitter-links';
 const REDDIT_LINKS = 'reddit-links';
 const GENERAL_LINKS = 'general-links';
-const MEDIA_LINKS = 'media-links';
 const MEDIA_ATTACHMENTS = 'media-attachments';
 
 const archiveMedia = (message) => {
@@ -99,7 +98,7 @@ const maybeSendGeneralLinks = (message, embed) => {
 
 const maybeSendMediaLinks = (message, embed) => {
     if (embed.type !== 'rich') {
-        sendToChannel(message, MEDIA_LINKS, embed.url);
+        sendToChannel(message, MEDIA_ATTACHMENTS, embed.url);
         return true;
     }
     return false;
