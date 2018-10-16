@@ -1,56 +1,136 @@
 const Attachment = require('discord.js').Attachment;
 const UrlValidator = require('./UrlValidator.js');
+const Utils = require('../utils/Utils.js');
 
-archiveMedia = (message) => {
+const DISCORD_BASE_URL = 'https://discordapp.com';
+
+const YOUTUBE_LINKS = 'youtube-links';
+const INSTAGRAM_LINKS = 'instagram-links';
+const SPOTIFY_LINKS = 'spotify-links';
+const VLIVE_LINKS = 'vlive-links';
+const TWITTER_LINKS = 'twitter-links';
+const REDDIT_LINKS = 'reddit-links';
+const GENERAL_LINKS = 'general-links';
+const MEDIA_LINKS = 'media-links';
+const MEDIA_ATTACHMENTS = 'media-attachments';
+
+const archiveMedia = (message) => {
     console.log(message);
     const guild = message.guild;
     if (!guild) return;
 
     const embeds = message.embeds;
-    const attachments = message.attachments;
     if (embeds) {
-        embeds.forEach((embed) => {
-            const ytMatch = UrlValidator.matchYTUrl(embed.url);
-            const igMatch = UrlValidator.matchIGUrl(embed.url);
-            const spMatch = UrlValidator.matchSpotifyUrl(embed.url);
-            const vlMatch = UrlValidator.matchVLiveUrl(embed.url);
-            const twitterMatch = UrlValidator.matchTwitterUrl(embed.url);
-            const redditMatch = UrlValidator.matchRedditUrl(embed.url);
-
-            if (ytMatch) {
-                const ytChannel = guild.channels.find(ch => ch.name === 'youtube-links');
-                if (ytChannel) ytChannel.send(ytMatch[0]);
-            } else if (igMatch) {
-                const igChannel = guild.channels.find(ch => ch.name === 'instagram-links');
-                if (igChannel) igChannel.send(igMatch[0]);
-            } else if (spMatch) {
-                const spChannel = guild.channels.find(ch => ch.name === 'spotify-links');
-                if (spChannel) spChannel.send(spMatch[0]);
-            } else if (vlMatch) {
-                const vliveChannel = guild.channels.find(ch => ch.name === 'vlive-links');
-                if (vliveChannel) vliveChannel.send(vlMatch[0]);
-            } else if (twitterMatch) {
-                const twitterChannel = guild.channels.find(ch => ch.name === 'twitter-links');
-                if (twitterChannel) twitterChannel.send(twitterMatch[0]);
-            } else if (redditMatch) {
-                const redditChannel = guild.channels.find(ch => ch.name === 'reddit-links');
-                if (redditChannel) redditChannel.send(redditMatch[0]);
-            } else if (embed.type === 'link') {
-                const linkChannel = guild.channels.find(ch => ch.name === 'general-links');
-                if (linkChannel) linkChannel.send(embed.url);
-            } else if (embed.type !== 'rich') {
-                const mediaChannel = guild.channels.find(ch => ch.name === 'media-links');
-                if (mediaChannel) mediaChannel.send(embed.url);
-            }
+        embeds.forEach(embed => {
+            !maybeSendYoutubeLinks(message, embed) &&
+            !maybeSendInstagramLinks(message, embed) &&
+            !maybeSendSpotifyLinks(message, embed) &&
+            !maybeSendVLiveLinks(message, embed) &&
+            !maybeSendTwitterLinks(message, embed) &&
+            !maybeSendRedditLinks(message, embed) &&
+            !maybeSendGeneralLinks(message, embed) &&
+            !maybeSendMediaLinks(message, embed);
         });
     }
-    if (attachments) {
-        attachments.forEach((attachment) => {
-            const mediaChannel = guild.channels.find(ch => ch.name === 'media-attachments');
-            if (mediaChannel) mediaChannel.send(new Attachment(attachment.url));
-        });
-    }
+    maybeSendAttachments(message);
 };
+
+const maybeSendYoutubeLinks = (message, embed) => {
+    const match = UrlValidator.matchYTUrl(embed.url);
+    if (match) {
+        sendToChannel(message, YOUTUBE_LINKS, match[0]);
+        return true;
+    }
+    return false;
+}
+
+const maybeSendInstagramLinks = (message, embed) => {
+    const match = UrlValidator.matchIGUrl(embed.url);
+    if (match) {
+        sendToChannel(message, INSTAGRAM_LINKS, match[0]);
+        return true;
+    }
+    return false;
+}
+
+const maybeSendSpotifyLinks = (message, embed) => {
+    const match = UrlValidator.matchSpotifyUrl(embed.url);
+    if (match) {
+        sendToChannel(message, SPOTIFY_LINKS, match[0]);
+        return true;
+    }
+    return false;
+}
+
+const maybeSendVLiveLinks = (message, embed) => {
+    const match = UrlValidator.matchVLiveUrl(embed.url);
+    if (match) {
+        sendToChannel(message, VLIVE_LINKS, match[0]);
+        return true;
+    }
+    return false;
+}
+
+const maybeSendTwitterLinks = (message, embed) => {
+    const match = UrlValidator.matchTwitterUrl(embed.url);
+    if (match) {
+        sendToChannel(message, TWITTER_LINKS, match[0]);
+        return true;
+    }
+    return false;
+}
+
+const maybeSendRedditLinks = (message, embed) => {
+    const match = UrlValidator.matchRedditUrl(embed.url);
+    if (match) {
+        sendToChannel(message, REDDIT_LINKS, match[0]);
+        return true;
+    }
+    return false;
+}
+
+const maybeSendGeneralLinks = (message, embed) => {
+    if (embed.type === 'link') {
+        sendToChannel(message, GENERAL_LINKS, embed.url);
+        return true;
+    }
+    return false;
+}
+
+const maybeSendMediaLinks = (message, embed) => {
+    if (embed.type !== 'rich') {
+        sendToChannel(message, MEDIA_LINKS, embed.url);
+        return true;
+    }
+    return false;
+}
+
+const maybeSendAttachments = (message) => {
+    const attachments = message.attachments;
+    if (attachments) {
+        attachments.forEach(attachment => {
+            sendToChannel(message, MEDIA_ATTACHMENTS, new Attachment(attachment.url), message.content);
+        })
+    }
+}
+
+const sendToChannel = async (originalMessage, channelName, messageToSend, extraContent) => {
+    const guild = originalMessage.guild;
+    const originalChannel = originalMessage.channel;
+    const channel = guild.channels.find(ch => ch.name === channelName);
+    if (channel) {
+        try {
+            await Utils.sendBlankLine(channel);
+            await channel.send(`${DISCORD_BASE_URL}/channels/${guild.id}/${originalChannel.id}/${originalMessage.id}`);
+            await Utils.sendSilentTag(channel, `${originalMessage.author} shared in ${originalChannel} `);
+            if (extraContent) await channel.send(extraContent);
+            await channel.send(messageToSend);
+            await Utils.sendBlankLine(channel);
+        } catch (e) {
+            console.error('Error while archiving media.', e);
+        }
+    }
+}
 
 module.exports = {
     archiveMedia,
