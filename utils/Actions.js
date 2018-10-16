@@ -122,9 +122,7 @@ const sendToChannel = async (originalMessage, channelName, messageToSend, extraC
         try {
             await Utils.sendBlankLine(channel);
             await channel.send(`${DISCORD_BASE_URL}/channels/${guild.id}/${originalChannel.id}/${originalMessage.id}`);
-            // Hack to tag authors but not ping them.
-            const signature = await channel.send('...');
-            signature.edit(`${originalMessage.author} shared in ${originalChannel} `);
+            await Utils.sendSilentTag(channel, `${originalMessage.author} shared in ${originalChannel} `);
             if (extraContent) await channel.send(extraContent);
             await channel.send(messageToSend);
             await Utils.sendBlankLine(channel);

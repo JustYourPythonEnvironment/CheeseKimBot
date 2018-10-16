@@ -15,9 +15,16 @@ const errAndMsg = (channel, err) => {
 // There is actually a character in here to make Discord believe it's not sending an empty message.
 const sendBlankLine = async channel => await channel.send('­');
 
+// Hack to tag authors but not notify them.
+const sendSilentTag = async (channel, msg) => {
+  const placeholder = await channel.send('...');
+  placeholder.edit(msg);
+}
+
 module.exports = {
   logAndMsg,
   getRandomIndex,
   errAndMsg,
   sendBlankLine,
+  sendSilentTag,
 };
