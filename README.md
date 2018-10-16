@@ -3,6 +3,10 @@
 
 # Setup
 
-1. Make sure you have node v10+.
-2. `npm install`
-3. `npm start` or alternatively, install nodemon and run `nodemon bot.js` to run the bot and watch for changes.
+1. Create a `.env` file in the root directory.
+2. Add `NODE_ENV=developer`
+3. Ask for the Discord token and add `DISCORD_TOKEN=<token>` in the `.env` file.
+4. Make sure you have node v10+.
+5. `npm install`
+6. `npm start` or alternatively, install nodemon and run `nodemon bot.js` to run the bot and watch for changes.
+7. Commands for this bot will be executed with the prefix and `-dev` appended to it (ex. `kimbap-dev thanks`).
