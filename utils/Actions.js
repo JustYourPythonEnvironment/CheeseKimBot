@@ -11,8 +11,7 @@ const VLIVE_LINKS = 'vlive-links';
 const TWITTER_LINKS = 'twitter-links';
 const REDDIT_LINKS = 'reddit-links';
 const GENERAL_LINKS = 'general-links';
-const MEDIA_LINKS = 'media-links';
-const MEDIA_ATTACHMENTS = 'media-attachments';
+const MEDIA = 'media';
 
 const archiveMedia = (message) => {
     console.log(message);
@@ -99,7 +98,7 @@ const maybeSendGeneralLinks = (message, embed) => {
 
 const maybeSendMediaLinks = (message, embed) => {
     if (embed.type !== 'rich') {
-        sendToChannel(message, MEDIA_LINKS, embed.url);
+        sendToChannel(message, MEDIA, embed.url);
         return true;
     }
     return false;
@@ -109,7 +108,7 @@ const maybeSendAttachments = (message) => {
     const attachments = message.attachments;
     if (attachments) {
         attachments.forEach(attachment => {
-            sendToChannel(message, MEDIA_ATTACHMENTS, new Attachment(attachment.url), message.content);
+            sendToChannel(message, MEDIA, new Attachment(attachment.url), message.content);
         })
     }
 }
