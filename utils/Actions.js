@@ -14,7 +14,6 @@ const GENERAL_LINKS = 'general-links';
 const MEDIA = 'media';
 
 const archiveMedia = (message) => {
-    console.log(message);
     const guild = message.guild;
     if (!guild) return;
 
