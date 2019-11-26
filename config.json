@@ -1,5 +1,5 @@
 {
-    "prefix": "kimbap ",
+    "prefix": "kimbap",
     "ignorePrefixes": [ "pg" ],
     "botLogChannelID": 627658565615747087
 }
